@@ -1,6 +1,7 @@
 let http = require('http')
 let handlers = require('./handlers/index')
 let qs = require('querystring')
+let downloadImage = require('./download-image')
 let port = 1337
 let images = {}
 let HOMEPAGE_HANDLER_INDEX = 1
@@ -33,6 +34,7 @@ http.createServer((req, res) => {
       }
 
       images[imageName] = imageUrl
+      downloadImage(imageUrl, imageName)
       handlers[HOMEPAGE_HANDLER_INDEX](req, res)  // display the homepage
     })
   } else if (req.method === 'GET') {
