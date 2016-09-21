@@ -1,6 +1,7 @@
 let fs = require('fs')
 let url = require('url')
 
+
 function getContentType (url) {
     // returns the content type of the given url
   let contentType = ''
@@ -32,7 +33,7 @@ function fileIsStatic (url) {
 module.exports = (req, res) => {
   req.pathName = req.pathName || url.parse(req.url).pathname
   if (fileIsStatic(req.pathName)) {
-    fs.readFile('.' + req.pathName, (err, data) => {
+    fs.readFile('.' + unescape(req.pathName), (err, data) => {
       if (err) {
         res.writeHead(404)
         res.write('404 Not Found')
