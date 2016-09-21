@@ -3,7 +3,7 @@ let handlers = require('./handlers/index')
 let qs = require('querystring')
 let port = 1337
 let images = {}
-let savedImages = false
+let HOMEPAGE_HANDLER_INDEX = 1
 
 http.createServer((req, res) => {
   if (req.method === 'POST') {
@@ -19,7 +19,7 @@ http.createServer((req, res) => {
       }
     })
 
-    savedImages = req.on('end', function () {
+    req.on('end', function () {
       let post = qs.parse(body)
       let imageName = post['imagename']
       let imageUrl = post['imageurl']
@@ -29,22 +29,19 @@ http.createServer((req, res) => {
         res.writeHead(404)
         res.write('The name and URL of the image cannot be empty.')
         res.end()
-        return false
+        return
       }
 
       images[imageName] = imageUrl
-      return true
+      handlers[HOMEPAGE_HANDLER_INDEX](req, res)  // display the homepage
     })
-  }
-
-  if (!savedImages) {
-  for (let handler of handlers) {
+  } else if (req.method === 'GET') {
+      for (let handler of handlers) {
     let next = handler(req, res)
     if (!next) {
       break
     }
   }
   }
-
 })
 .listen(port)
