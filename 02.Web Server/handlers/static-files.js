@@ -16,23 +16,39 @@ function getContentType (url) {
   return contentType
 }
 
+function fileIsStatic (url) {
+  // we serve only .html, .css, .js and .jpg files.
+  // if the request wants something other than those, do not serve it from this handler
+  if (url.endsWith('css') ||
+      url.endsWith('js') ||
+      url.endsWith('jpg') ||
+      url.endsWith('.html')) {
+    return true
+  }
+
+  return false
+}
+
 module.exports = (req, res) => {
   req.pathName = req.pathName || url.parse(req.url).pathname
+  if (fileIsStatic(req.pathName)) {
+    fs.readFile('.' + req.pathName, (err, data) => {
+      if (err) {
+        res.writeHead(404)
+        res.write('404 Not Found')
+        res.end()
+        return true
+      }
 
-  fs.readFile('.' + req.pathName, (err, data) => {
-    if (err) {
-      res.writeHead(404)
-      res.write('404 Not Found')
+      let contentType = getContentType(req.pathName)
+
+      res.writeHead(200, {
+        'Content-Type': contentType
+      })
+      res.write(data)
       res.end()
-      return true
-    }
-
-    let contentType = getContentType(req.pathName)
-
-    res.writeHead(200, {
-      'Content-Type': contentType
     })
-    res.write(data)
-    res.end()
-  })
+  } else {  // if it's not a static file'
+    return true
+  }
 }
