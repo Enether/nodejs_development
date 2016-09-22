@@ -24,22 +24,20 @@ function fileIsStatic (url) {
       url.endsWith('.js') ||
       url.endsWith('.jpg') ||
       url.endsWith('.html')) {
-        console.log(url)
-        console.log(url.startsWith('/content/'))
     return true
   }
 
   return false
 }
 
-// function fileIsFromContent (url) {
-//   // return a boolean indicating if the url is trying to access the content folder
-
-// }
+function fileIsFromContent (url) {
+  // return a boolean indicating if the url is trying to access the content folder
+  return url.startsWith('/content/')
+}
 
 module.exports = (req, res) => {
   req.pathName = req.pathName || url.parse(req.url).pathname
-  if (fileIsStatic(req.pathName)) {
+  if (fileIsStatic(req.pathName) && fileIsFromContent(req.pathName)) {
     fs.readFile('.' + unescape(req.pathName), (err, data) => {
       if (err) {
         res.writeHead(404)
