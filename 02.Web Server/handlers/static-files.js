@@ -20,15 +20,22 @@ function getContentType (url) {
 function fileIsStatic (url) {
   // we serve only .html, .css, .js and .jpg files.
   // if the request wants something other than those, do not serve it from this handler
-  if (url.endsWith('css') ||
-      url.endsWith('js') ||
-      url.endsWith('jpg') ||
+  if (url.endsWith('.css') ||
+      url.endsWith('.js') ||
+      url.endsWith('.jpg') ||
       url.endsWith('.html')) {
+        console.log(url)
+        console.log(url.startsWith('/content/'))
     return true
   }
 
   return false
 }
+
+// function fileIsFromContent (url) {
+//   // return a boolean indicating if the url is trying to access the content folder
+
+// }
 
 module.exports = (req, res) => {
   req.pathName = req.pathName || url.parse(req.url).pathname
