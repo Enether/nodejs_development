@@ -15,7 +15,7 @@ function downloadImage (imageUrl, imageName, callback) {
 }
 
 // create the image folder if it doesnt exist
-if (!fs.exists(imageDir)) {
+if (!fs.lstatSync(imageDir)) {
   fs.mkdirSync(imageDir)
 }
 
