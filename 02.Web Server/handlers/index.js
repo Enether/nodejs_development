@@ -5,6 +5,7 @@ let favicon = require('./favicon')
 let homePage = require('./home-page')
 let addImagePage = require('./add-image')
 let detailsPage = require('./details-page')
+let imageDetail = require('./open-image-details')
 let staticFiles = require('./static-files')
 
 module.exports = [
@@ -12,5 +13,6 @@ module.exports = [
   homePage,
   addImagePage,
   detailsPage,
+  imageDetail,
   staticFiles
 ]
