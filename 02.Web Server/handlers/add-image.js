@@ -1,11 +1,13 @@
+/* this module opens the add-image page with forms for submitting an image */
 let fs = require('fs')
 let url = require('url')
+let addImagePagePath = './add-image.html'
 
 module.exports = (req, res) => {
   req.pathName = req.pathName || url.parse(req.url).pathname
 
   if (req.pathName === '/add-image') {
-    fs.readFile('./add-image.html', (err, data) => {
+    fs.readFile(addImagePagePath, (err, data) => {
       if (err) {
         console.log(err.message)
       }

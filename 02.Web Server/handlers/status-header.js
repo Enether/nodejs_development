@@ -14,15 +14,17 @@ function buildStatusHtml (imagesCount) {
 module.exports = (req, res, images) => {
   req.pathName = req.pathName || url.parse(req.url).pathName
 
-  if (req.headers['StatusHeader'] === 'Full') {
-    fs.writeFile('./status.html', buildStatusHtml(Object.keys(images).length))
+  if (req.headers['statusheader'] === 'Full') {
+    fs.writeFile(statusFileDir, buildStatusHtml(Object.keys(images).length))
 
     fs.readFile(statusFileDir, (err, data) => {
       if (err) {
         console.log(err.message)
       }
 
-      res.writeHead(200)
+      res.writeHead(200, {
+        'Content-Type': 'text/html'
+      })
       res.write(data)
       res.end()
     })

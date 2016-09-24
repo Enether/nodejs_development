@@ -1,4 +1,4 @@
-// this modules downloads an image the user has entered
+// this module downloads an image the user has entered
 let http = require('http')
 let https = require('https')
 let fs = require('fs')

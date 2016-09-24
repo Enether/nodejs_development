@@ -1,9 +1,9 @@
+/* this module opens .css/.js/.jpg/.html static files from the content subfolder */
 let fs = require('fs')
 let url = require('url')
 
-
 function getContentType (url) {
-    // returns the content type of the given url
+  // returns the content type of the given url
   let contentType = ''
 
   if (url.endsWith('.css')) {
@@ -37,6 +37,7 @@ function fileIsFromContent (url) {
 
 module.exports = (req, res) => {
   req.pathName = req.pathName || url.parse(req.url).pathname
+
   if (fileIsStatic(req.pathName) && fileIsFromContent(req.pathName)) {
     fs.readFile('.' + unescape(req.pathName), (err, data) => {
       if (err) {

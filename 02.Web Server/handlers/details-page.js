@@ -1,35 +1,36 @@
+/* this module creates the details.html page and handles the request to it */
 let fs = require('fs')
 let url = require('url')
+let detailsPagePath = './details.html'
 
 // when the user wants to enter it, we load the HTML
 function buildListingHtml (images) {
-  var header = ''
-  var body = ''
+  let body = ''
 
   // create the body
   for (let imageIndex in images) {
     let imageName = images[imageIndex]
-    body += '<a href=' + '"/content/images/details/' + imageIndex + '">' + imageName + '</a>\n'
+    body += '<a href=' + '"/content/images/details/' + imageIndex + '">' + imageName + '</a>'
   }
-  body += '<button onclick="goBack()">Back</button>\n'
-  body += '<script>\n'
-  body += 'function goBack() {\n'
-  body += '\twindow.history.back();\n'
-  body += '}\n'
-  body += '</script>\n'
+  body += buildBackButtonHtml()
 
-  return '<!DOCTYPE html>' + '<html><header>' + header + '</header><body>' + body + '</body></html>'
+  return '<!DOCTYPE html><html><header></header><body>' + body + '</body></html>'
 };
+
+function buildBackButtonHtml () {
+  // returns the html + js for a functioning back button
+  return '<button onclick="goBack()">Back</button><script>function goBack() {window.history.back();}</script>'
+}
 
 module.exports = (req, res, images) => {
   req.pathName = req.pathName || url.parse(req.url).pathname
 
   if (req.pathName === '/details') {
-    // build html
+    // create the html file
+    fs.writeFile(detailsPagePath, buildListingHtml(images))
 
-    fs.writeFile('./details.html', buildListingHtml(images))
-
-    fs.readFile('./details.html', (err, data) => {
+    // open the html file
+    fs.readFile(detailsPagePath, (err, data) => {
       if (err) {
         console.log(err.message)
       }

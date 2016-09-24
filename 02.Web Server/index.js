@@ -3,10 +3,8 @@ let handlers = require('./handlers/index')
 let qs = require('querystring')
 let downloadImage = require('./download-image')
 let port = 1337
-let images = {}
-let imageCount = 0
-
-let HOMEPAGE_HANDLER_INDEX = 2
+let images = {}  // object that holds all the images we've downloaded, like this: 'imageIndex: imageName' => '1: Cat'
+let HOMEPAGE_HANDLER_INDEX = 2  // the index of the homepage handler in the handler array
 
 http.createServer((req, res) => {
   if (req.method === 'POST') {
@@ -23,11 +21,10 @@ http.createServer((req, res) => {
     })
 
     req.on('end', function () {
-      imageCount++
       let post = qs.parse(body)
       let imageName = post['imagename']
       let imageUrl = post['imageurl']
-      let imageIndex = imageCount
+      let imageIndex = Object.keys(images).length
 
       if (imageName.length === 0 || imageUrl.length === 0) {
         // ERROR
