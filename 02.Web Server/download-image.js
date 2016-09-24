@@ -1,26 +1,34 @@
 // this modules downloads an image the user has entered
 let http = require('http')
+let https = require('https')
 let fs = require('fs')
-let imageDir = './content/images/'
-let detailsDir = './content/images/details/'
+let imageDirPath = './content/images/'
+let detailsDirPath = './content/images/details/'
+let imageFileExtension = '.jpg'
 
-// TODO: https too
-function downloadImage (imageUrl, imageName, callback) {
-  let file = fs.createWriteStream(imageName)
+function downloadImage (imageUrl, imagePath, callback) {
+  let image = fs.createWriteStream(imagePath)
 
   // request for the image
-  http.get(imageUrl, function (response) {
-    response.pipe(file)
-  })
+  if (imagePath.startsWith('https')) {
+    https.get(imageUrl, function (response) {
+      response.pipe(image)
+    })
+  } else {
+    http.get(imageUrl, function (response) {
+      response.pipe(image)
+    })
+  }
+
   callback()
 }
 
 // create the image folder and details if it doesnt exist
-fs.stat(imageDir, (err, stats) => {
+fs.stat(imageDirPath, (err, stats) => {
   if (err.code === 'ENOENT') {
     // file does not exist
-    fs.mkdirSync(imageDir)
-    fs.mkdirSync(detailsDir)
+    fs.mkdirSync(imageDirPath)
+    fs.mkdirSync(detailsDirPath)
   } else if (err) {
     console.log(err.message)
   }
@@ -28,7 +36,7 @@ fs.stat(imageDir, (err, stats) => {
 
 module.exports = (imageurl, imagename, imageIndex) => {
   // downloads the image
-  downloadImage(imageurl, './content/images/details/' + imageIndex + '.jpg', function () {
+  downloadImage(imageurl, detailsDirPath + imageIndex + imageFileExtension, function () {
     console.log('Done downloading image "' + imagename + '"')
   })
 }
