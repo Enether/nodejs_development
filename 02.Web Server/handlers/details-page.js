@@ -18,7 +18,7 @@ function buildListingHtml (images) {
 module.exports = (req, res, images) => {
   req.pathName = req.pathName || url.parse(req.url).pathname
 
-  if (req.pathName === '/details.html') {
+  if (req.pathName === '/details') {
     // build html
 
     fs.writeFile('./details.html', buildListingHtml(images))

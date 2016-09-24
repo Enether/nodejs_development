@@ -4,7 +4,7 @@ let url = require('url')
 module.exports = (req, res) => {
   req.pathName = req.pathName || url.parse(req.url).pathname
 
-  if (req.pathName === '/add-image.html') {
+  if (req.pathName === '/add-image') {
     fs.readFile('./add-image.html', (err, data) => {
       if (err) console.log('HANDLE ERROR')
 
