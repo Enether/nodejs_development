@@ -1,13 +1,12 @@
 let http = require('http')
 let handlers = require('./handlers/index')
 let qs = require('querystring')
-let fs = require('fs')
 let downloadImage = require('./download-image')
 let port = 1337
 let images = {}
 let imageCount = 0
 
-let HOMEPAGE_HANDLER_INDEX = 1
+let HOMEPAGE_HANDLER_INDEX = 2
 
 http.createServer((req, res) => {
   if (req.method === 'POST') {
