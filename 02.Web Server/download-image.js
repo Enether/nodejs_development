@@ -10,7 +10,7 @@ function downloadImage (imageUrl, imagePath, callback) {
   let image = fs.createWriteStream(imagePath)
 
   // request for the image
-  if (imagePath.startsWith('https')) {
+  if (imageUrl.startsWith('https')) {
     https.get(imageUrl, function (response) {
       response.pipe(image)
     })
@@ -25,7 +25,7 @@ function downloadImage (imageUrl, imagePath, callback) {
 
 // create the image folder and details if it doesnt exist
 fs.stat(imageDirPath, (err, stats) => {
-  if (err.code === 'ENOENT') {
+  if (err !== null && err.code === 'ENOENT') {
     // file does not exist
     fs.mkdirSync(imageDirPath)
     fs.mkdirSync(detailsDirPath)
