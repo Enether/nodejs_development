@@ -6,11 +6,17 @@ function buildListingHtml (images) {
   var header = ''
   var body = ''
 
-  // concatenate header string
+  // create the body
   for (let imageIndex in images) {
     let imageName = images[imageIndex]
     body += '<a href=' + '"/content/images/details/' + imageIndex + '">' + imageName + '</a>\n'
   }
+  body += '<button onclick="goBack()">Back</button>\n'
+  body += '<script>\n'
+  body += 'function goBack() {\n'
+  body += '\twindow.history.back();\n'
+  body += '}\n'
+  body += '</script>\n'
 
   return '<!DOCTYPE html>' + '<html><header>' + header + '</header><body>' + body + '</body></html>'
 };
