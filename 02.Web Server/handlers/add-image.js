@@ -6,7 +6,9 @@ module.exports = (req, res) => {
 
   if (req.pathName === '/add-image') {
     fs.readFile('./add-image.html', (err, data) => {
-      if (err) console.log('HANDLE ERROR')
+      if (err) {
+        console.log(err.message)
+      }
 
       res.writeHead(200, {
         'Content-Type': 'text/html'

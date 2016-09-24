@@ -18,7 +18,9 @@ module.exports = (req, res, images) => {
     fs.writeFile('./status.html', buildStatusHtml(Object.keys(images).length))
 
     fs.readFile(statusFileDir, (err, data) => {
-      if (err) console.log(err.code)
+      if (err) {
+        console.log(err.message)
+      }
 
       res.writeHead(200)
       res.write(data)

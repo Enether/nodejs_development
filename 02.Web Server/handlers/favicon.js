@@ -6,7 +6,9 @@ module.exports = (req, res) => {
 
   if (req.pathName === '/favicon.ico') {
     fs.readFile('./content/favicon.ico', (err, data) => {
-      if (err) console.log('Handle error!')
+      if (err) {
+        console.log(err.message)
+      }
 
       res.writeHead(200)
       res.write(data)

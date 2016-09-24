@@ -17,19 +17,18 @@ function downloadImage (imageUrl, imageName, callback) {
 
 // create the image folder and details if it doesnt exist
 fs.stat(imageDir, (err, stats) => {
-  if (err === null) {
-    console.log('HANDLE ERROR')
-  } else if (err.code === 'ENOENT') {
+  if (err.code === 'ENOENT') {
     // file does not exist
     fs.mkdirSync(imageDir)
     fs.mkdirSync(detailsDir)
+  } else if (err) {
+    console.log(err.message)
   }
 })
-
 
 module.exports = (imageurl, imagename, imageIndex) => {
   // downloads the image
   downloadImage(imageurl, './content/images/details/' + imageIndex + '.jpg', function () {
-    console.log('Done downloading image ' + imagename)
+    console.log('Done downloading image "' + imagename + '"')
   })
 }

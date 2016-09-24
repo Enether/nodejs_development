@@ -30,7 +30,9 @@ module.exports = (req, res, images) => {
     fs.writeFile('./details.html', buildListingHtml(images))
 
     fs.readFile('./details.html', (err, data) => {
-      if (err) console.log('HANDLE ERROR')
+      if (err) {
+        console.log(err.message)
+      }
 
       res.writeHead(200, {
         'Content-Type': 'text/html'
