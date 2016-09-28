@@ -1,6 +1,7 @@
 // this module downloads an image the user has entered
 let multiparty = require('multiparty')
 let fs = require('fs')
+let urlGenerator = require('./generate-unique-image-url')
 let imageDirPath = './content/images/'
 let detailsDirPath = './content/images/details/'
 
@@ -36,7 +37,7 @@ function downloadImage (req, images, imagePath, callback) {
 
       part.on('data', (data) => { file += data })
 
-      part.on('end', () => {      
+      part.on('end', () => {  
         // create a separate folder for the jpg
         let fs = require('fs')
         detailsDirPath = './content/images/details/' + index + '/'
@@ -47,6 +48,8 @@ function downloadImage (req, images, imagePath, callback) {
           if (err) console.log(err.message)
           else {
             images[index] = part.filename
+            urlGenerator(detailsDirPath)
+            
           }
         })
 
