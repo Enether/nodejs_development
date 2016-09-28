@@ -36,8 +36,11 @@ function downloadImage (req, images, imagePath, callback) {
 
       part.on('data', (data) => { file += data })
 
-      part.on('end', () => {
-        detailsDirPath = './content/images/details/'
+      part.on('end', () => {      
+        // create a separate folder for the jpg
+        let fs = require('fs')
+        detailsDirPath = './content/images/details/' + index + '/'
+        fs.mkdir(detailsDirPath)
         detailsDirPath += index + '.jpg'  // add the image name to get the full path
 
         fs.writeFile(detailsDirPath, file, 'ascii', (err) => {

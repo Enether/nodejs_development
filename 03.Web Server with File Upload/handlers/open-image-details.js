@@ -1,7 +1,7 @@
 /* this module handles the request to open an image from content/images/details */
 let url = require('url')
 let fs = require('fs')
-let regexPattern = new RegExp(/\/content\/images\/details\/(\d+)/)
+let regexPattern = new RegExp(/\/content\/images\/details\/(\d+)\/\1/)
 let imageExtension = '.jpg'
 
 module.exports = (req, res, images) => {

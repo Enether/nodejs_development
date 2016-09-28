@@ -10,7 +10,7 @@ function buildListingHtml (images) {
   // create the body
   for (let imageIndex in images) {
     let imageName = images[imageIndex]
-    body += '<a href=' + '"/content/images/details/' + imageIndex + '">' + imageName + '</a>'
+    body += '<a href=' + '"/content/images/details/' + imageIndex + '/' + imageIndex + '">' + imageName + '</a>'
   }
   body += buildBackButtonHtml()
 
