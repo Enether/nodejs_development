@@ -27,12 +27,19 @@ module.exports = (req, res, images) => {
   let parsedJSON = require('../image-urls.json')
   if (pathNameInJSON(parsedJSON, req.pathName)) {
     // read the file
-    let imageDir = parsedJSON[req.pathName]
+    let imageDir = parsedJSON[req.pathName].path
     let file = fs.readFileSync(imageDir, 'binary')
-
-    res.setHeader('Content-disposition', 'attachment; filename=' + 'brrrrraBeE.jpg')
+    
+    res.setHeader('Content-disposition', 'attachment; filename=' + parsedJSON[req.pathName].name + '.gz')
     res.writeHead(200, {'Content-Type': 'image/jpeg'})
-    res.write(file, 'binary')
+    let zlib = require('zlib')
+    let gzip = zlib.createGzip()
+    let readStream = fs.createReadStream(imageDir)
+    let writeStream = fs.createWriteStream(imageDir + '.gz')
+    // TODO: Add header information
+    readStream.pipe(gzip).pipe(writeStream)
+    let GZIPPEDfile = fs.readFileSync(imageDir + '.gz', 'binary')
+    res.write(GZIPPEDfile, 'binary')
     res.end()
   } else {
     return true

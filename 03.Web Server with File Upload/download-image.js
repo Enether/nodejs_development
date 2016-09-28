@@ -48,7 +48,7 @@ function downloadImage (req, images, imagePath, callback) {
           if (err) console.log(err.message)
           else {
             images[index] = part.filename
-            urlGenerator(detailsDirPath)
+            urlGenerator(detailsDirPath, part.filename)
           }
         })
 

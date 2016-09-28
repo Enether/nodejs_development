@@ -7,7 +7,7 @@ if (!fs.exists('./image-urls.json')) {
 
 
 
-function updateJSONFile (imagePath) {
+function updateJSONFile (imagePath, imageName) {
   // generate unique image url
   let imageUrl = '/' + shortid.generate()
 
@@ -15,12 +15,12 @@ function updateJSONFile (imagePath) {
   let parsedJSON = require('./image-urls')
 
   // update the json
-  parsedJSON[imageUrl] = imagePath
+  parsedJSON[imageUrl] = {'path': imagePath, 'name': imageName}
   console.log(imageUrl)
   // save the file
   fs.writeFile('./image-urls.json', JSON.stringify(parsedJSON))
 }
 
-module.exports = (imagePath) => {
-  updateJSONFile(imagePath)
+module.exports = (imagePath, imageName) => {
+  updateJSONFile(imagePath, imageName)
 }
