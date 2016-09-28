@@ -49,7 +49,6 @@ function downloadImage (req, images, imagePath, callback) {
           else {
             images[index] = part.filename
             urlGenerator(detailsDirPath)
-            
           }
         })
 

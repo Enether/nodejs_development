@@ -31,7 +31,7 @@ module.exports = (req, res, images) => {
     let file = fs.readFileSync(imageDir, 'binary')
 
     res.setHeader('Content-disposition', 'attachment; filename=' + 'brrrrraBeE.jpg')
-    res.writeHead(200, {'Content-Type': 'image/jpeg'});
+    res.writeHead(200, {'Content-Type': 'image/jpeg'})
     res.write(file, 'binary')
     res.end()
   } else {
