@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Submit images to the server</title>
+</head>
+<body>
+    <form method="post" action="/" enctype="multipart/form-data">
+        Image:<br>
+        <input type="file" name="image">
+        <br><br>
+        <input type="submit" value="Submit">
+    </form>
+    <button onclick="goBack()">Back</button>
+
+    <script>
+    function goBack() {
+        window.history.back();
+    }
+    </script>
+</body>
+</html>
