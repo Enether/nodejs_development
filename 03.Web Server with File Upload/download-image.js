@@ -74,7 +74,9 @@ function downloadImage (req, images, callback) {
 
           imagePath = './content/images/details/' + publicImageFolderName + '/' // create the full path of the future directory of the image
         }
-        fs.mkdir(imagePath)  // create the folder for the image
+        if (!fs.existsSync(imagePath)) {
+          fs.mkdir(imagePath)  // create the folder for the image
+        }
 
         imagePath += isPrivate ? privateIndex + '.jpg' : index + '.jpg'  // add the image name to complete the path for saving
 
