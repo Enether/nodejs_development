@@ -62,7 +62,7 @@ function downloadImage (req, images, imagePath, callback) {
 
         if (isPrivate) {
           // handle a private image
-          let privateIndex = getLatestPrivateImageIndex()  // the index of a private image,
+          privateIndex = getLatestPrivateImageIndex()  // the index of a private image,
           // used to differentiate between private images (their folder is privateX where X is the index)
 
           detailsDirPath = './content/images/details/private' + privateIndex + '/'
