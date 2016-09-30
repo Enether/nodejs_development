@@ -1,5 +1,9 @@
+/* this module handles the download of private images through their unique hidden URL.
+   image-urls.json holds information about secret URLs and their corresponding path */
 let url = require('url')
 let fs = require('fs')
+let zlib = require('zlib')
+let gzip = zlib.createGzip()
 
 function pathNameInJSON (json, key) {
     /*
@@ -21,25 +25,38 @@ function pathNameInJSON (json, key) {
   return false
 }
 
+function gzipFile (fileDir) {
+  let gzipFileDir = fileDir + '.gz'
+  // create the streams
+  let readStream = fs.createReadStream(fileDir)
+  let writeStream = fs.createWriteStream(gzipFileDir)
+
+  // read the file and create a gzip version of it
+  readStream.pipe(gzip).pipe(writeStream)
+
+  // read the gzipped file
+  let gzippedFile = fs.readFileSync(gzipFileDir, 'binary')
+
+  // delete the gzipped file, because it's no longer needed on the filesystem
+  fs.unlink(gzipFileDir, () => { console.log('deleted file at ' + gzipFileDir) })
+
+  return gzippedFile
+}
+
 module.exports = (req, res, images) => {
   req.pathName = req.pathName || url.parse(req.url).pathname
-  // read the file
+  // load the json holding information about private image URLs
   let parsedJSON = require('../image-urls.json')
+
   if (pathNameInJSON(parsedJSON, req.pathName)) {
     // read the file
     let imageDir = parsedJSON[req.pathName].path
-    let file = fs.readFileSync(imageDir, 'binary')
-    
+    // convert it to gzip
+    let gzippedImage = gzipFile(imageDir)
+
     res.setHeader('Content-disposition', 'attachment; filename=' + parsedJSON[req.pathName].name)
     res.writeHead(200, {'Content-Type': 'image/jpeg', 'Content-Encoding': 'gzip'})
-    let zlib = require('zlib')
-    let gzip = zlib.createGzip()
-    let readStream = fs.createReadStream(imageDir)
-    let writeStream = fs.createWriteStream(imageDir + '.gz')
-    // TODO: Add header information
-    readStream.pipe(gzip).pipe(writeStream)
-    let GZIPPEDfile = fs.readFileSync(imageDir + '.gz', 'binary')
-    res.write(GZIPPEDfile, 'binary')
+    res.write(gzippedImage, 'binary')
     res.end()
   } else {
     return true
