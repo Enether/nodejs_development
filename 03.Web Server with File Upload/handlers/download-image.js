@@ -30,8 +30,8 @@ module.exports = (req, res, images) => {
     let imageDir = parsedJSON[req.pathName].path
     let file = fs.readFileSync(imageDir, 'binary')
     
-    res.setHeader('Content-disposition', 'attachment; filename=' + parsedJSON[req.pathName].name + '.gz')
-    res.writeHead(200, {'Content-Type': 'image/jpeg'})
+    res.setHeader('Content-disposition', 'attachment; filename=' + parsedJSON[req.pathName].name)
+    res.writeHead(200, {'Content-Type': 'image/jpeg', 'Content-Encoding': 'gzip'})
     let zlib = require('zlib')
     let gzip = zlib.createGzip()
     let readStream = fs.createReadStream(imageDir)
