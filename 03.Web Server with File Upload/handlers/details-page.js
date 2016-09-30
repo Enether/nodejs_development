@@ -27,7 +27,7 @@ module.exports = (req, res, images) => {
 
   if (req.pathName === '/details') {
     // create the html file
-    fs.writeFile(detailsPagePath, buildListingHtml(images))
+    fs.writeFileSync(detailsPagePath, buildListingHtml(images))
 
     // open the html file
     fs.readFile(detailsPagePath, (err, data) => {
