@@ -1,4 +1,4 @@
-/* this module opens .css/.js/.jpg/.html static files from the content subfolder */
+/* this module opens .css/.js/.jpg/.html static files from the content subfolder but does not open images that are private */
 let fs = require('fs')
 let url = require('url')
 let privateImagePathRegexPattern = /.+?\/private(\d+)\/.+?.jpg/

@@ -1,5 +1,5 @@
 /*
-Module returns the lsit of all the handlers for us to iterate through
+Module returns the list of all the handlers for us to iterate through
 */
 let favicon = require('./favicon')
 let downloadImage = require('./download-image.js')
