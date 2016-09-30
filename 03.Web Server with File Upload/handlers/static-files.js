@@ -1,6 +1,7 @@
 /* this module opens .css/.js/.jpg/.html static files from the content subfolder */
 let fs = require('fs')
 let url = require('url')
+let privateImagePathRegexPattern = /.+?\/private(\d+)\/.+?.jpg/
 
 function getContentType (url) {
   // returns the content type of the given url
@@ -35,10 +36,22 @@ function fileIsFromContent (url) {
   return url.startsWith('/content/')
 }
 
+function fileIsPrivateImage (url) {
+  // return a boolean indicating if the url is trying to access a private image.
+  // private images are in folders like privateX where X is their index. Ex: ...private5/5.jpg
+  if (privateImagePathRegexPattern.exec(url)) {
+    // there is a match => image is private
+    return true
+  }
+
+  return false
+}
+
 module.exports = (req, res) => {
   req.pathName = req.pathName || url.parse(req.url).pathname
 
-  if (fileIsStatic(req.pathName) && fileIsFromContent(req.pathName)) {
+  if (fileIsStatic(req.pathName) && fileIsFromContent(req.pathName) &&
+      !fileIsPrivateImage(req.pathName)) {
     fs.readFile('.' + unescape(req.pathName), (err, data) => {
       if (err) {
         res.writeHead(404)
@@ -55,7 +68,7 @@ module.exports = (req, res) => {
       res.write(data)
       res.end()
     })
-  } else {  // if it's not a static file'
+  } else {  // if it's not a static file
     return true
   }
 }
