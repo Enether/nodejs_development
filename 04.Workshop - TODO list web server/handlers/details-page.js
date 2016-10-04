@@ -25,6 +25,7 @@ function createHTML (todo) {
   body += '<form id="stateForm" method="POST" action="/">'
   body += '<input type="hidden" name="state" value="pending">'
   body += '<input type="hidden" name="todoIndex" value="' + todo[TODO_INDEX_KEY] + '">'
+  body += '<textarea rows="4" cols="50" name="comment">Enter comment here...</textarea>'
   body += '<button type="submit" onclick="changeState();" id="changeStateButton">DONE</button>'
   body += '<script>'
   body += '  function changeState(){'
