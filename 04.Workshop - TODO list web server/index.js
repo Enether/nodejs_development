@@ -3,13 +3,13 @@ let qs = require('querystring')
 
 let handlers = require('./handlers/handlers')
 let port = 1337
-let todos = {}  // object that will hold our TODO objects
+let todos = []  // array that will hold our TODO objects
 
 http.createServer((req, res) => {
   if (req.method === 'GET') {
     // iterate through the handlers, when we get to the correct one we break the for loop
     for (let handler of handlers) {
-      let toContinue = handler(req, res)
+      let toContinue = handler(req, res, todos)
       if (!toContinue) {
         break
       }
@@ -26,7 +26,7 @@ http.createServer((req, res) => {
       let todoTitle = post['todoname']
       let todoDescription = post['tododesc']
       let todoState = 'Pending'
-      let todoIndex = Object.keys(todos).length
+      let todoIndex = todos.length
 
       if (todoTitle.length === 0 || todoDescription.length === 0) {
         // Invalid data
@@ -36,7 +36,7 @@ http.createServer((req, res) => {
         return
       }
 
-      todos[todoIndex] = {'title': todoTitle, 'description': todoDescription, 'state': todoState}
+      todos[todoIndex] = {'title': todoTitle, 'description': todoDescription, 'state': todoState, 'index': todoIndex}
     })
   }
 }).listen(port)
