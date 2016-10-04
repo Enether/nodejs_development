@@ -1,0 +1,11 @@
+{
+  "name": "todo-list-server",
+  "version": "1.0.0",
+  "description": "A web server for a workshop(in-class exercise) of SoftUni's Node.js development course",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Enether",
+  "license": "ISC"
+}
