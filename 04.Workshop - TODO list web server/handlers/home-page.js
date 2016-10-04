@@ -10,11 +10,10 @@ module.exports = (req, res) => {
     fs.readFile(indexPagePath, (err, data) => {
       if (err) console.log(err.message)
       // display index.html
-      let html = fs.readFileSync('./index.html')
       res.writeHead(200, {
         'Content-Type': 'text/html'
       })
-      res.write(html)
+      res.write(data)
       res.end()
     })
   } else {
