@@ -5,6 +5,13 @@ let handlers = require('./handlers/handlers')
 let port = 1337
 let todos = []  // array that will hold our TODO objects
 
+function getOppositeState (state) {
+  if (state === 'pending') {
+    return 'done'
+  } else {
+    return 'pending'
+  }
+}
 http.createServer((req, res) => {
   if (req.method === 'GET') {
     // iterate through the handlers, when we get to the correct one we break the for loop
@@ -24,19 +31,27 @@ http.createServer((req, res) => {
     req.on('end', () => {
       let post = qs.parse(body)
       let todoTitle = post['todoname']
-      let todoDescription = post['tododesc']
-      let todoState = 'Pending'
-      let todoIndex = todos.length
 
-      if (todoTitle.length === 0 || todoDescription.length === 0) {
+      if (todoTitle === undefined) {
+          // we're chaning the state of a TODO in the todos array
+        let todoIndex = parseInt(post['todoIndex'])
+        todos[todoIndex].state = getOppositeState(todos[todoIndex].state)
+      } else {
+        let todoTitle = post['todoname']
+        let todoDescription = post['tododesc']
+        let todoState = 'Pending'
+        let todoIndex = todos.length
+
+        if (todoTitle.length === 0 || todoDescription.length === 0) {
         // Invalid data
-        res.writeHead(404)
-        res.write('The title and description of a TODO cannot be empty!')
-        res.end()
-        return
-      }
+          res.writeHead(404)
+          res.write('The title and description of a TODO cannot be empty!')
+          res.end()
+          return
+        }
 
-      todos[todoIndex] = {'title': todoTitle, 'description': todoDescription, 'state': todoState, 'index': todoIndex}
+        todos[todoIndex] = {'title': todoTitle, 'description': todoDescription, 'state': todoState, 'index': todoIndex}
+      }
     })
   }
 }).listen(port)
