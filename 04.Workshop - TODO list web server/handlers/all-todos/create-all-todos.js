@@ -1,11 +1,11 @@
-/* this module dynamically generates HTML of all the TODOs and displays that page to the user */
+/* this module dynamically generates the HTML page of all the TODOs and saves it */
 let fs = require('fs')
-let url = require('url')
-let allPagePath = './all-page.html'
+
 let TODO_TITLE_KEY = 'title'
 let TODO_DESCRIPTION_KEY = 'description'
 let TODO_STATE_KEY = 'state'
 let TODO_INDEX_KEY = 'index'
+let allPagePath = './handlers/all-todos/all-page.html'
 
 function compareTODOStates (a, b) {
   if (a.state < b.state) {
@@ -22,7 +22,6 @@ function compareTODOStates (a, b) {
   }
 }
 
-
 function createHTML (todos) {
   // todos is an object holding TODO objects with properties title, description, index and state
   // this function creates an HTML page with all of our todos
@@ -35,13 +34,6 @@ function createHTML (todos) {
     let todoDesc = todo[TODO_DESCRIPTION_KEY]
     let todoState = todo[TODO_STATE_KEY]
     let todoID = todo[TODO_INDEX_KEY]
-/*
-<h2><a href="brr">An unordered HTML list</a></h2>
-<ul>
-  <li>Coffee</li>
-  <li>Tea</li>
-  <li>Milk</li>
-</ul> */
     body += '<h2><a href=' + '"details/' + todoID + '">' + todoTitle + '</a></h2>'
     body += '<ul>'
     body += '<li>' + todoDesc + '</li>'
@@ -52,26 +44,14 @@ function createHTML (todos) {
   return '<!DOCTYPE html><html><header></header><body>' + body + '</body></html>'
 }
 
-module.exports = (req, res, todos) => {
-  req.pathName = req.pathName || url.parse(req.url).pathname
+function saveHTML (todos) {
+  // function creates the HTML page and saves it to the filesystem
+  let html = createHTML(todos)
+  // create the html file
+  fs.writeFileSync(allPagePath, html)
 
-  if (req.pathName === '/all') {
-    // create the html file
-    fs.writeFileSync(allPagePath, createHTML(todos))
-
-    // open the html file
-    fs.readFile(allPagePath, (err, data) => {
-      if (err) {
-        console.log(err.message)
-      }
-
-      res.writeHead(200, {
-        'Content-Type': 'text/html'
-      })
-      res.write(data)
-      res.end()
-    })
-  } else {
-    return true
-  }
+  // return the path we saved it to
+  return allPagePath
 }
+
+module.exports = saveHTML

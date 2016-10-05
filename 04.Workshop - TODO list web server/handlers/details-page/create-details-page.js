@@ -1,8 +1,7 @@
-/* this module creates a page for a separate TODO, displaying it's properties and shows it to the user */
-let url = require('url')
+/* this module creates the HTML page that displays a specific TODO task and it's properties' */
 let fs = require('fs')
-let detailsPageDir = './details-page.html'
-let regexPattern = new RegExp(/\/details\/(\d+)/)
+let detailsPageDir = './handlers/details-page/details-page.html'
+// the keys for our todo object
 let TODO_TITLE_KEY = 'title'
 let TODO_DESCRIPTION_KEY = 'description'
 let TODO_STATE_KEY = 'state'
@@ -57,24 +56,13 @@ function createHTML (todo) {
   return '<!DOCTYPE html><html><header></header><body>' + body + '</body></html>'
 }
 
-module.exports = (req, res, images) => {
-  req.pathName = req.pathName || url.parse(req.url).pathname
-  let match = req.pathName.match(regexPattern)
+function saveHTML (todo) {
+  // this function saves the dynamically-created HTML and returns it's path
+  let html = createHTML(todo)
 
-  if (match !== null) {
-    // if it's trying to access an image from the details directory
-    let index = parseInt(match[1])
-    fs.writeFileSync(detailsPageDir, createHTML(images[index]))
-    fs.readFile(detailsPageDir, (err, data) => {
-      if (err) {
-        console.log(err.message)
-      }
+  fs.writeFileSync(detailsPageDir, html)
 
-      res.writeHead(200)
-      res.write(data)
-      res.end()
-    })
-  } else {
-    return true
-  }
+  return detailsPageDir
 }
+
+module.exports = saveHTML
