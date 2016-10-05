@@ -5,7 +5,7 @@ let TODO_TITLE_KEY = 'title'
 let TODO_DESCRIPTION_KEY = 'description'
 let TODO_STATE_KEY = 'state'
 let TODO_INDEX_KEY = 'index'
-let allPagePath = './handlers/all-todos/all-page.html'
+let allPagePath = './handlers/GET/all-todos/all-page.html'
 
 function compareTODOStates (a, b) {
   if (a.state < b.state) {

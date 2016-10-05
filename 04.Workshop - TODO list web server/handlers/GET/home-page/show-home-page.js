@@ -1,6 +1,6 @@
 // this module displays our homepage to the user
 let fs = require('fs')
-let homePagePath = './handlers/home-page/index.html'
+let homePagePath = './handlers/GET/home-page/index.html'
 
 function showHomePage (res) {
   // display our home page to the user

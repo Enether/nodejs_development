@@ -1,6 +1,6 @@
 /* this module creates the HTML page that displays a specific TODO task and it's properties' */
 let fs = require('fs')
-let detailsPageDir = './handlers/details-page/details-page.html'
+let detailsPageDir = './handlers/GET/details-page/details-page.html'
 // the keys for our todo object
 let TODO_TITLE_KEY = 'title'
 let TODO_DESCRIPTION_KEY = 'description'
