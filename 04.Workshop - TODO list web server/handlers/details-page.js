@@ -7,6 +7,7 @@ let TODO_TITLE_KEY = 'title'
 let TODO_DESCRIPTION_KEY = 'description'
 let TODO_STATE_KEY = 'state'
 let TODO_INDEX_KEY = 'index'
+let TODO_COMMENTS_KEY = 'comments'
 
 function createHTML (todo) {
     // this function creates the html that displays information about a TODO
@@ -22,6 +23,14 @@ function createHTML (todo) {
     stateParagraphText = 'DONE'
   }
   body += '<p id="stateParagraph">' + stateParagraphText + '</p>'
+
+  // add comments if there are any
+  let todoComments = todo[TODO_COMMENTS_KEY]
+  for (let i in todoComments) {
+    let comment = todoComments[i]
+    body += '<p>Comment at ' + comment.date + '<br>- ' + comment.comment + '</p>'
+  }
+
   body += '<form id="stateForm" method="POST" action="/">'
   body += '<input type="hidden" name="state" value="pending">'
   body += '<input type="hidden" name="todoIndex" value="' + todo[TODO_INDEX_KEY] + '">'
