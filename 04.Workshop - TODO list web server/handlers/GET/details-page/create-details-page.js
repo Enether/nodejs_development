@@ -23,6 +23,11 @@ function createHTML (todo) {
   }
   body += '<p id="stateParagraph">' + stateParagraphText + '</p>'
 
+  // add an image if there is one
+  if (todo.imagePath) {
+    body += '<img src="' + todo.imagePath + '" align="left">'
+  }
+
   // add comments if there are any
   let todoComments = todo[TODO_COMMENTS_KEY]
   for (let i in todoComments) {

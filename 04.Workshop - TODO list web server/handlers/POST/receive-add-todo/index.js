@@ -5,7 +5,7 @@ let addTodo = require('./add-todo')
 module.exports = (res, req, fields, files, todos) => {
   if (fields.todoname) {
     // we've been sent a TODO, meaning we need to add it
-    addTodo(res, todos, fields)  // creates a TODO object and adds it to our todos array
+    addTodo(res, todos, fields, files)  // creates a TODO object and adds it to our todos array
   } else {
     return true
   }
