@@ -35,7 +35,7 @@ function createHTML (todo) {
     body += '<p>Comment at ' + comment.date + '<br>- ' + comment.comment + '</p>'
   }
 
-  body += '<form id="stateForm" method="POST" action="/">'
+  body += '<form id="stateForm" method="POST" action="/" enctype="multipart/form-data">'
   body += '<input type="hidden" name="state" value="pending">'
   body += '<input type="hidden" name="todoIndex" value="' + todo[TODO_INDEX_KEY] + '">'
   body += '<textarea rows="4" cols="50" name="comment">Enter comment here...</textarea>'
