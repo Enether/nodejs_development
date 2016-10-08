@@ -1,6 +1,5 @@
 let http = require('http')
-let qs = require('querystring')
-
+let multiparty = require('multiparty')
 let getHandlers = require('./handlers/get-handlers')
 let postHandlers = require('./handlers/post-handlers')
 let port = 1337
@@ -18,20 +17,20 @@ http.createServer((req, res) => {
     }
   } else if (req.method === 'POST') {
     // read and save the data
-    let body = ''
-    req.on('data', (data) => {
-      body += data
-    })
-
-    // pass the data around until we reach the correct handler for the data
-    req.on('end', () => {
-      let post = qs.parse(body)
+    let form = new multiparty.Form()
+    form.parse(req, (err, fields, files) => {
+      if (err) console.log(err)
       for (let handler of postHandlers) {
-        let toContinue = handler(res, req, post, todos)
+        let toContinue = handler(res, req, fields, files, todos)
         if (!toContinue) {
           break
         }
       }
+    })
+
+    // pass the data around until we reach the correct handler for the data
+    req.on('end', () => {
+      console.log('request has ended')
     })
   }
 }).listen(port)

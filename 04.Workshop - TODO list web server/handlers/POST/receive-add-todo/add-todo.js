@@ -1,7 +1,7 @@
 // this module creates a TODO object and adds it to our globally-used todos array of TODO objects
-function addTodo (res, todos, post) {
-  let todoTitle = post['todoname']
-  let todoDescription = post['tododesc']
+function addTodo (res, todos, fields) {
+  let todoTitle = fields['todoname']
+  let todoDescription = fields['tododesc']
   let todoState = 'Pending'
   let todoComments = [] // array that will hold separate comment objects
   let todoIndex = todos.length

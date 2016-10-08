@@ -26,9 +26,9 @@ function getOppositeState (state) {
   }
 }
 
-function modifyTodo (todos, todoIndex, post) {
+function modifyTodo (todos, todoIndex, fields) {
   // this function modifies our TODO, changing it's state and possibly adding a comment
-  let comment = post['comment']
+  let comment = fields['comment']
   if (comment !== 'Enter comment here...' && comment !== '') {
     // user has posted a comment
     let commentDate = getCurrentDate()
