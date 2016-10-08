@@ -29,6 +29,7 @@ function getOppositeState (state) {
 function modifyTodo (todos, todoIndex, fields) {
   // this function modifies our TODO, changing it's state and possibly adding a comment
   let comment = fields['comment']
+  let state = fields['state'][0]
   if (comment !== 'Enter comment here...' && comment !== '') {
     // user has posted a comment
     let commentDate = getCurrentDate()
@@ -37,7 +38,7 @@ function modifyTodo (todos, todoIndex, fields) {
     todos[todoIndex].comments.push(commentObject)
   }
   // TODO: Reload details page
-  todos[todoIndex].state = getOppositeState(todos[todoIndex].state)
+  todos[todoIndex].state = getOppositeState(state)
 }
 
 module.exports = modifyTodo
