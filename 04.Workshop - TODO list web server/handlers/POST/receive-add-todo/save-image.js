@@ -8,20 +8,17 @@ function copyFile (source, target, cb) {
   // in the callback, print out an error
   var cbCalled = false
 
-  var rd = fs.createReadStream(source)
-  rd.on('error', (err) => {
+  var readStream = fs.createReadStream(source)
+  readStream.on('error', (err) => {
     done(err)
   })
 
-  var wr = fs.createWriteStream(target)
-  wr.on('error', (err) => {
+  var writeStream = fs.createWriteStream(target)
+  writeStream.on('error', (err) => {
     done(err)
   })
-  wr.on('close', (ex) => {
-    done()
-  })
 
-  rd.pipe(wr)  // read the file and send it to our target destination
+  readStream.pipe(writeStream)  // read the file and send it to our target destination
 
   function done (err) {
     if (!cbCalled) {
@@ -32,21 +29,22 @@ function copyFile (source, target, cb) {
 }
 
 function downloadImage (imagePath, todoIndex, todos) {
-  let imageDestinationPath = './details/' + todoIndex + '/' + todoIndex + '.jpg'
+  let imageDestinationPath = '/details/' + todoIndex + '/' + todoIndex + '.jpg'
 
-  copyFile(imagePath, imageDestinationPath, (err) => {
+  copyFile(imagePath, '.' + imageDestinationPath, (err) => {
     if (err) {
       console.log(err)
     } else {
-      console.log('File saved successfully to ' + imageDestinationPath)
-      todos[todoIndex].imagePath = '/details/' + todoIndex + '/' + todoIndex + '.jpg'  // save the image's path to it's object in our array
+      console.log('File saved successfully to ' + '.' + imageDestinationPath)
+      todos[todoIndex].imagePath = imageDestinationPath  // save the image's path to it's object in our array
     }
   })
 }
 
 function saveImage (imagePath, todoIndex, todos) {
-  if (!fs.existsSync('./details/' + todoIndex + '/')) {
-    fs.mkdirSync('./details/' + todoIndex + '/')  // create such a folder if it doesn't exist
+  let imageDestinationFolder = './details/' + todoIndex + '/'
+  if (!fs.existsSync(imageDestinationFolder)) {
+    fs.mkdirSync(imageDestinationFolder)  // create such a folder if it doesn't exist
   }
   downloadImage(imagePath, todoIndex, todos)
 }

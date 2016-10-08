@@ -44,7 +44,7 @@ function modifyTodo (res, todos, todoIndex, fields) {
 
     todos[todoIndex].comments.push(commentObject)  // add the comment to the array of comments
     // Reload details page
-    reloadPage(res, todos[todoIndex], true)
+    reloadPage(res, todos[todoIndex], true)  // true because we want to reload the page
   }
   todos[todoIndex].state = getOppositeState(state)
 }
