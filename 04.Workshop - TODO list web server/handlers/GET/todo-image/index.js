@@ -1,6 +1,6 @@
 /* this module routes the GET request to a specific TODO's image
-and displays it, althought it does not end the response. This is used when we display the image along with
-other information about the TODO */
+and displays it, although it does not end the response. This is used when we display the image along with
+other information about the TODO in the dynamically-generated HTML of our details page */
 let url = require('url')
 let regexPattern = new RegExp(/\/details\/(\d+)\/\d+.jpg/)
 

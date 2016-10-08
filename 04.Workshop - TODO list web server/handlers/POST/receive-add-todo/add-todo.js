@@ -4,7 +4,7 @@ let saveImage = require('./save-image')
 function addTodo (res, todos, fields, files) {
   let todoTitle = fields['todoname']
   let todoDescription = fields['tododesc']
-  let todoState = 'Pending'
+  let todoState = 'pending'
   let todoComments = [] // array that will hold separate comment objects
   let todoIndex = todos.length
   let imagePath = ''

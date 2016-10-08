@@ -1,6 +1,6 @@
 /* this module creates the HTML page that displays the total number of our TODO tasks and comments */
 let fs = require('fs')
-let statsPageDir = './handlers/GET/statistics-page/statistics-page.html'
+let STATS_PAGE_DIR = './handlers/GET/statistics-page/statistics-page.html'
 let TODO_COMMENTS_KEY = 'comments'
 
 function countTodoComments (todos) {
@@ -16,6 +16,7 @@ function countTodoComments (todos) {
 
 function createHTML (todos) {
   let body = ''
+
   body += '<h1>' + 'Total number of TODO tasks added: ' + todos.length + '</h1>'
   body += '<h1>' + 'Total number of TODO comments added: ' + countTodoComments(todos) + '</h1>'
 
@@ -23,12 +24,10 @@ function createHTML (todos) {
 }
 
 function saveHTML (todos) {
-  // this function saves the dynamically-created HTML and returns it's path
+  // this function saves the dynamically-created HTML
   let html = createHTML(todos)
 
-  fs.writeFileSync(statsPageDir, html)
-
-  return statsPageDir
+  fs.writeFileSync(STATS_PAGE_DIR, html)
 }
 
 module.exports = saveHTML

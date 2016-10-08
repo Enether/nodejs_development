@@ -97,6 +97,11 @@ function downloadImage (req, images, callback) {
         callback(part.filename)
       })
     } else if (part.name === 'privateImageCheckBox') {
+       let file = ''
+       part.on('data', (data) => {
+        file += data
+      })
+      console.log(part)
       isPrivate = true
     } })
 }

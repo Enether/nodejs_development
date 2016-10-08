@@ -1,6 +1,6 @@
 /* this module creates the HTML page that displays a specific TODO task and it's properties' */
 let fs = require('fs')
-let detailsPageDir = './handlers/GET/details-page/details-page.html'
+let DETAILS_PAGE_DIR = './handlers/GET/details-page/details-page.html'
 // the keys for our todo object
 let TODO_TITLE_KEY = 'title'
 let TODO_DESCRIPTION_KEY = 'description'
@@ -9,7 +9,9 @@ let TODO_INDEX_KEY = 'index'
 let TODO_COMMENTS_KEY = 'comments'
 
 let PENDING_PARAGRAPH_TEXT = 'PENDING...'
+let CHANGE_TO_PENDING_BUTTON_TEXT = 'Change to pending...'
 let DONE_PARAGRAPH_TEXT = 'DONE'
+let DONE_BUTTON_TEXT = 'DONE!'
 
 function getTodoState (todo) {
   // gets the state of TODO task to be shown on the page
@@ -25,7 +27,20 @@ function getTodoState (todo) {
   return stateParagraphText
 }
 
-function createHTML (todo) {
+function getButtonText (todo) {
+  // returns the appropriate button text for the TODO's current state
+  let buttonText = ''
+  let todoState = todo[TODO_STATE_KEY]
+
+  if (todoState === 'pending') {
+    buttonText = DONE_BUTTON_TEXT
+  } else {
+    buttonText = CHANGE_TO_PENDING_BUTTON_TEXT
+  }
+
+  return buttonText
+}
+function createHTML (todo, reload) {
   // this function creates the html that displays information about a TODO
   let body = ''
   // TODO Title and Description
@@ -33,7 +48,7 @@ function createHTML (todo) {
   body += '<p>' + todo[TODO_DESCRIPTION_KEY] + '</p>'
 
   // the TODO's state. It is interchangeable
-  body += '<p id="stateParagraph"></p>'
+  body += '<p id="stateParagraph">' + getTodoState(todo) + '</p>'
 
   // add an image if there is one
   if (todo.imagePath) {
@@ -55,22 +70,27 @@ function createHTML (todo) {
   // the text area for the ability to add a comment to a TODO
   body += '<textarea rows="4" cols="50" name="comment">Enter comment here...</textarea>'
   // The button that changes the TODO's state and a comment the user has given
-  body += '<button type="submit" onclick="changeState();" id="changeStateButton">Change to pending</button>'
+  body += '<button type="submit" onclick="changeState(true);" id="changeStateButton">' + getButtonText(todo) + '</button>'
   // in-html javascript script to change the displayed state and button text when the state is changed.
   body += '<script>'
-  body += 'changeState();'  // call the function on HTML load in case the TODO's state has been previously changed
-  body += '  function changeState(){'
+  if (!reload) {  // this function should be called only on the initial creation
+    body += 'changeState(false);'  // call the function on HTML load in case the TODO's state has been previously changed
+  }
+  body += 'function changeState(toSubmit){'
   body += 'state = document.getElementById("stateParagraph").innerHTML;'
   body += 'if (state === "PENDING...") {'
-  body += 'document.getElementById("stateParagraph").innerHTML = "DONE!";'  // change state paragraph
+  body += 'document.getElementById("stateParagraph").innerHTML = "' + DONE_PARAGRAPH_TEXT + '!";'  // change state paragraph
   body += 'document.getElementById("changeStateButton").innerHTML = "Change to pending";'  // change button text
-  body += 'document.getElementById("state").value = "done";'
+  body += 'document.getElementById("state").value = "done";'  // change the state's value so that we can read it later in the post request
+  body += 'if (toSubmit) {'
   body += 'document.getElementById("stateForm").submit();'
-  body += '} else {'
-  body += 'document.getElementById("stateParagraph").innerHTML = "PENDING...";'  // change state paragraph
+  body += '}} else {'
+  body += 'document.getElementById("stateParagraph").innerHTML = "' + PENDING_PARAGRAPH_TEXT + '";'  // change state paragraph
   body += 'document.getElementById("changeStateButton").innerHTML = "DONE";'  // change button text
   body += 'document.getElementById("state").value = "pending";'  // change the state's value so that we can read it later in the post request
+  body += 'if (toSubmit) {'
   body += 'document.getElementById("stateForm").submit();'
+  body += '}'
   body += '}'
   body += '}'
   body += '</script>'
@@ -80,13 +100,11 @@ function createHTML (todo) {
   return '<!DOCTYPE html><html><header></header><body>' + body + '</body></html>'
 }
 
-function saveHTML (todo) {
+function saveHTML (todo, reload) {
   // this function saves the dynamically-created HTML and returns it's path
-  let html = createHTML(todo)
+  let html = createHTML(todo, reload)
 
-  fs.writeFileSync(detailsPageDir, html)
-
-  return detailsPageDir
+  fs.writeFileSync(DETAILS_PAGE_DIR, html)
 }
 
 module.exports = saveHTML
